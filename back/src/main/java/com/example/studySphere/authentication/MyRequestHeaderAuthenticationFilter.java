@@ -3,7 +3,6 @@ package com.example.studySphere.authentication;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -14,9 +13,12 @@ public class MyRequestHeaderAuthenticationFilter extends RequestHeaderAuthentica
 		setPrincipalRequestHeader(HttpHeaders.AUTHORIZATION);
 		setExceptionIfHeaderMissing(false);
 		setAuthenticationManager(authenticationManager);
-		setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/hello"));
+		setRequiresAuthenticationRequestMatcher(
+				new ExcludePathMatcher(new String[] {"/", "/api/login"}));
 
-		this.setAuthenticationSuccessHandler((request, response, authentication) -> {
+		this.setAuthenticationSuccessHandler((request, response, authentication) ->
+
+		{
 			//
 			log.info("Success2");
 		});
