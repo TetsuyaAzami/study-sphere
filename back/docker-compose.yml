@@ -1,0 +1,33 @@
+services:
+  app:
+    build:
+      context: .
+      target: development
+    container_name: study_sphere_app
+    working_dir: /app
+    volumes:
+      - ./:/app/
+    env_file:
+      - ./mysql/.env
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    tty: true
+    depends_on:
+      - mysql
+  mysql:
+    build: ./mysql
+    container_name: study_sphere_mysql
+    volumes:
+      - study_sphere_mysql_data:/var/lib/mysql
+      - study_sphere_mysql_log:/var/log/mysql
+    env_file:
+      - ./mysql/.env
+    ports:
+      - "3306:3306"
+
+volumes:
+  study_sphere_mysql_data:
+    external: true
+  study_sphere_mysql_log:
+    external: true
