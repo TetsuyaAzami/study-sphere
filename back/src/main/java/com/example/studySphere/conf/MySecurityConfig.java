@@ -3,7 +3,6 @@ package com.example.studySphere.conf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,10 +12,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import com.example.studySphere.authentication.AuthUserDetailsService;
-import com.example.studySphere.authentication.MyAuthenticationUserDetailsService;
-import com.example.studySphere.authentication.MyRequestHeaderAuthenticationFilter;
+import com.example.studySphere.authentication.ExcludePathMatcher;
+import com.example.studySphere.authentication.JWTTokenAuthenticationFilter;
+import com.example.studySphere.authentication.JWTTokenAuthenticationProvider;
+import com.example.studySphere.authentication.JWTTokenVerifier;
 import com.example.studySphere.authentication.MyUsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -25,17 +25,12 @@ public class MySecurityConfig {
 
 	@Autowired
 	public void configureProvider(AuthenticationManagerBuilder auth,
-			AuthUserDetailsService authUserDetailsService,
-			MyAuthenticationUserDetailsService myAuthenticationUserDetailsService)
+			AuthUserDetailsService authUserDetailsService, JWTTokenVerifier jwtTokenVerifier)
 			throws Exception {
 		//
-		PreAuthenticatedAuthenticationProvider preAuthenticatedAuthenticationProvider =
-				new PreAuthenticatedAuthenticationProvider();
-		preAuthenticatedAuthenticationProvider
-				.setPreAuthenticatedUserDetailsService(myAuthenticationUserDetailsService);
-		preAuthenticatedAuthenticationProvider
-				.setUserDetailsChecker(new AccountStatusUserDetailsChecker());
-		auth.authenticationProvider(preAuthenticatedAuthenticationProvider);
+		JWTTokenAuthenticationProvider jwtTokenAuthenticationProvider =
+				new JWTTokenAuthenticationProvider(jwtTokenVerifier);
+		auth.authenticationProvider(jwtTokenAuthenticationProvider);
 
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setUserDetailsService(authUserDetailsService);
@@ -60,7 +55,8 @@ public class MySecurityConfig {
 				authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
 
 		http.addFilter(new MyUsernamePasswordAuthenticationFilter(authenticationManager));
-		http.addFilter(new MyRequestHeaderAuthenticationFilter(authenticationManager));
+		http.addFilterBefore(new JWTTokenAuthenticationFilter(
+				new ExcludePathMatcher(new String[] {"/", "/api/login"}), authenticationManager), MyUsernamePasswordAuthenticationFilter.class);
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.csrf().disable();

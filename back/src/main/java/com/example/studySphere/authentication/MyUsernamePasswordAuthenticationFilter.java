@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.studySphere.error.ErrorResponse;
+import com.example.studySphere.web.MyCookies;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,7 +40,7 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
 					.withClaim("role", authentication.getAuthorities().iterator().next().toString())
 					.sign(Algorithm.HMAC256(System.getenv("SECRET_KEY")));
 
-			response.addHeader("X-AUTH-TOKEN", "Bearer " + jwtToken);
+			MyCookies.AUTH.setCookie(response, jwtToken, Duration.ofHours(1));
 			response.setStatus(200);
 			response.getWriter()
 					.write(new ObjectMapper().writeValueAsString(authentication.getName()));

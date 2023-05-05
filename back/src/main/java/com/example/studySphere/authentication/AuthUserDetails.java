@@ -10,11 +10,11 @@ public class AuthUserDetails extends User {
 
 	private AuthUser authUser;
 
-	public AuthUserDetails(AuthUser person) {
+	public AuthUserDetails(AuthUser authUser) {
 		//
-		super(person.getUsername(), person.getPassword(),
-				Arrays.asList(person.getRoles().split(",")).stream()
+		super(authUser.getUsername(), authUser.getPassword(),
+				Arrays.asList(authUser.getRoles().split(",")).stream()
 						.map(role -> new SimpleGrantedAuthority(role)).toList());
-		this.authUser = person;
+		this.authUser = authUser;
 	}
 }
