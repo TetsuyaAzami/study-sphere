@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.server.ResponseStatusException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.studySphere.error.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,6 +43,14 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
 			response.setStatus(200);
 			response.getWriter()
 					.write(new ObjectMapper().writeValueAsString(authentication.getName()));
+		});
+
+		this.setAuthenticationFailureHandler((request, response, exception) -> {
+			//
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+			ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "ユーザ名もしくはパスワードが一致しません");
+			response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
 		});
 	}
 
