@@ -28,9 +28,12 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
 			//
 			AuthUserDetails userDetails = (AuthUserDetails) authentication.getPrincipal();
 
-			String jwtToken = JWT.create().withIssuer("test-issuer").withIssuedAt(Instant.now())
-					.withExpiresAt(Instant.now().plus(Duration.ofDays(60)))
+			String jwtToken = JWT.create().withIssuer("studySphere.com").withIssuedAt(Instant.now())
+					.withExpiresAt(Instant.now().plus(Duration.ofHours(1)))
+					.withSubject(String.valueOf(userDetails.getAuthUser().getId()))
 					.withClaim("username", userDetails.getAuthUser().getUsername())
+					.withClaim("email", userDetails.getAuthUser().getEmail())
+					.withClaim("age", userDetails.getAuthUser().getAge())
 					.withClaim("role", authentication.getAuthorities().iterator().next().toString())
 					.sign(Algorithm.HMAC256(System.getenv("SECRET_KEY")));
 
