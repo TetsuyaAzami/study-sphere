@@ -56,7 +56,8 @@ public class MySecurityConfig {
 
 		http.addFilter(new MyUsernamePasswordAuthenticationFilter(authenticationManager));
 		http.addFilterBefore(new JWTTokenAuthenticationFilter(
-				new ExcludePathMatcher(new String[] {"/", "/api/login"}), authenticationManager), MyUsernamePasswordAuthenticationFilter.class);
+				new ExcludePathMatcher(new String[] {"/", "/api/login", "/error"}),
+				authenticationManager), MyUsernamePasswordAuthenticationFilter.class);
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.csrf().disable();
