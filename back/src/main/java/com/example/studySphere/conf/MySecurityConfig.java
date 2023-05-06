@@ -13,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import com.example.studySphere.authentication.ExcludePathMatcher;
+import com.example.studySphere.authentication.jwt.JWTTokenProvider;
 import com.example.studySphere.authentication.jwt.JWTTokenVerifier;
 import com.example.studySphere.authentication.jwtValidation.JWTTokenAuthenticationFilter;
 import com.example.studySphere.authentication.jwtValidation.JWTTokenAuthenticationProvider;
@@ -22,6 +23,9 @@ import com.example.studySphere.authentication.login.MyUsernamePasswordAuthentica
 @EnableWebSecurity
 @Configuration
 public class MySecurityConfig {
+
+	@Autowired
+	private JWTTokenProvider jwtTokenProvider;
 
 	@Autowired
 	public void configureProvider(AuthenticationManagerBuilder auth,
@@ -54,7 +58,8 @@ public class MySecurityConfig {
 		AuthenticationManager authenticationManager =
 				authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
 
-		http.addFilter(new MyUsernamePasswordAuthenticationFilter(authenticationManager));
+		http.addFilter(new MyUsernamePasswordAuthenticationFilter(authenticationManager,
+				jwtTokenProvider));
 		http.addFilterBefore(new JWTTokenAuthenticationFilter(
 				new ExcludePathMatcher(new String[] {"/", "/api/login", "/error"}),
 				authenticationManager), MyUsernamePasswordAuthenticationFilter.class);
