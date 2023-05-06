@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,12 +26,22 @@ public class ApiControllerAdvice extends ResponseEntityExceptionHandler {
 		return super.handleExceptionInternal(ex, errorResponse, headers, statusCode, request);
 	}
 
+	@ExceptionHandler(ResponseStatusException.class)
+	public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException ex,
+			HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+		//
+		ErrorResponse errorResponse = new ErrorResponse(statusCode.value(), ex.getMessage());
+		log.error(ex.getMessage(), ex);
+
+		return new ResponseEntity<Object>(errorResponse, headers, statusCode);
+	}
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
 		//
 		ErrorResponse errorResponse =
 				new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "サーバ内で何らかのエラーが発生しました");
-		log.error("サーバ内で何らかのエラーが発生しました");
+		log.error("サーバ内で何らかのエラーが発生しました", ex);
 
 		return ResponseEntity.internalServerError().body(errorResponse);
 	}
