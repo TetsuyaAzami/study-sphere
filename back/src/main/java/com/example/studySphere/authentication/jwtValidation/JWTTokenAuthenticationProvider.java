@@ -1,9 +1,10 @@
-package com.example.studySphere.authentication;
+package com.example.studySphere.authentication.jwtValidation;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.example.studySphere.authentication.jwt.JWTTokenVerifier;
 
 public class JWTTokenAuthenticationProvider implements AuthenticationProvider {
 

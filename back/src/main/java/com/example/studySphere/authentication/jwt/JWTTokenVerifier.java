@@ -1,4 +1,4 @@
-package com.example.studySphere.authentication;
+package com.example.studySphere.authentication.jwt;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +8,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.studySphere.authentication.AuthUser;
+import com.example.studySphere.authentication.AuthUserDetails;
+import com.example.studySphere.authentication.jwtValidation.JWTAuthenticationToken;
 
 @Component
 public class JWTTokenVerifier {

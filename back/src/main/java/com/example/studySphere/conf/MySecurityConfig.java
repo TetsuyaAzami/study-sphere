@@ -12,12 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import com.example.studySphere.authentication.AuthUserDetailsService;
 import com.example.studySphere.authentication.ExcludePathMatcher;
-import com.example.studySphere.authentication.JWTTokenAuthenticationFilter;
-import com.example.studySphere.authentication.JWTTokenAuthenticationProvider;
-import com.example.studySphere.authentication.JWTTokenVerifier;
-import com.example.studySphere.authentication.MyUsernamePasswordAuthenticationFilter;
+import com.example.studySphere.authentication.jwt.JWTTokenVerifier;
+import com.example.studySphere.authentication.jwtValidation.JWTTokenAuthenticationFilter;
+import com.example.studySphere.authentication.jwtValidation.JWTTokenAuthenticationProvider;
+import com.example.studySphere.authentication.login.AuthUserDetailsService;
+import com.example.studySphere.authentication.login.MyUsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration

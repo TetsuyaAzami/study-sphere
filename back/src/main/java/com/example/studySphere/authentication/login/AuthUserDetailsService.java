@@ -1,8 +1,10 @@
-package com.example.studySphere.authentication;
+package com.example.studySphere.authentication.login;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import com.example.studySphere.authentication.AuthUser;
+import com.example.studySphere.authentication.AuthUserDetails;
 
 @Service
 public class AuthUserDetailsService implements UserDetailsService {

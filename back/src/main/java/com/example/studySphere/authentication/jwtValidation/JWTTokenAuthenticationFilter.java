@@ -1,14 +1,18 @@
-package com.example.studySphere.authentication;
+package com.example.studySphere.authentication.jwtValidation;
 
 import java.io.IOException;
 import java.util.Arrays;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import com.example.studySphere.error.ErrorResponse;
 import com.example.studySphere.web.MyCookies;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,8 +33,10 @@ public class JWTTokenAuthenticationFilter extends AbstractAuthenticationProcessi
 		});
 		setAuthenticationFailureHandler((request, response, exception) -> {
 			//
-			log.error("ログイン失敗", exception);
-			throw new BadCredentialsException(exception.getMessage());
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.setContentType(MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8");
+			ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "ログイン情報がありません。ログインし直してください");
+			response.getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
 		});
 	}
 

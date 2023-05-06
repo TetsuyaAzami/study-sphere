@@ -1,4 +1,4 @@
-package com.example.studySphere.authentication;
+package com.example.studySphere.authentication.login;
 
 import lombok.Data;
 

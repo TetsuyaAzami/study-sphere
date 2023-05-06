@@ -1,4 +1,4 @@
-package com.example.studySphere.authentication;
+package com.example.studySphere.authentication.jwtValidation;
 
 import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
