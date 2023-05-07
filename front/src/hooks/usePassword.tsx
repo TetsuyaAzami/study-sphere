@@ -1,22 +1,28 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, FocusEvent } from "react";
 
 export const usePassword = () => {
   //
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState<string>("");
   const [passwordInvalidLengthMessage, setPasswordInvalidLengthMessage] =
-    useState("");
+    useState<string>("");
 
   const minLength: number = 8;
   const maxLength: number = 128;
 
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const isPasswordValid = (password: string): boolean => {
+    return minLength <= password.length && password.length <= maxLength;
+  };
+
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
-  const handlePasswordBlur = (e: any) => {
+  const handlePasswordBlur = (e: FocusEvent<HTMLInputElement>): void => {
     //
     const value = e.target.value;
-    if (value.length < minLength || maxLength < value.length) {
+    console.log(value);
+
+    if (!isPasswordValid(value)) {
       setPasswordInvalidLengthMessage(
         `パスワードは${minLength}文字以上${maxLength}文字以下で入力してください。`
       );
@@ -27,11 +33,8 @@ export const usePassword = () => {
 
   return {
     password,
-    setPassword,
     maxLength,
-    minLength,
     passwordInvalidLengthMessage,
-    setPasswordInvalidLengthMessage,
     handlePasswordChange,
     handlePasswordBlur,
   };
