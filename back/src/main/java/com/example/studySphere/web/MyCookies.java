@@ -11,13 +11,14 @@ public enum MyCookies {
 		@Override
 		public void setCookie(HttpServletResponse response, String value, Duration maxAge) {
 			//
-			ResponseCookie responseCookie = ResponseCookie.from(this.name(), value).maxAge(maxAge).httpOnly(true).secure(false)
-					.sameSite(SameSite.LAX.attributeValue()).build();
+			ResponseCookie responseCookie = ResponseCookie.from(this.name(), value).maxAge(maxAge).httpOnly(true).secure(true)
+					.sameSite(SameSite.NONE.attributeValue()).build();
 
-			response.addHeader("Set-Cookie", responseCookie.toString());
+			response.addHeader(SET_COOKIE, responseCookie.toString());
 		}
 	};
 
+	private static final String SET_COOKIE = "Set-Cookie";
 	private String name;
 
 	private MyCookies(String name) {
