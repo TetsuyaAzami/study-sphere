@@ -27,6 +27,7 @@ public class JWTTokenAuthenticationFilter extends AbstractAuthenticationProcessi
 		//
 		super(requiresAuthenticationRequestMatcher, authenticationManager);
 
+		setContinueChainBeforeSuccessfulAuthentication(true);
 		setAuthenticationSuccessHandler((request, response, authentication) -> {
 			//
 			log.info("ログイン成功");
@@ -47,7 +48,7 @@ public class JWTTokenAuthenticationFilter extends AbstractAuthenticationProcessi
 		//
 		Cookie[] requestCookies = request.getCookies();
 
-		if (request.getCookies() == null)
+		if (requestCookies == null)
 			throw new BadCredentialsException("認証情報がありません。ログインしてください");
 
 		Cookie authCookie = Arrays.stream(requestCookies)
