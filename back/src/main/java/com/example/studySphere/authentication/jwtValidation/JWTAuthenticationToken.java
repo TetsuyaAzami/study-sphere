@@ -10,15 +10,23 @@ public class JWTAuthenticationToken extends AbstractAuthenticationToken {
 
 	private String token;
 
-	public JWTAuthenticationToken(Object principal, String token, Collection<? extends GrantedAuthority> authorities) {
-		super(authorities);
+	public JWTAuthenticationToken(Object principal, String token) {
+		//
+		super(null);
 		this.principal = principal;
 		this.token = token;
 	}
 
+	public JWTAuthenticationToken(Object principal, String token, Collection<? extends GrantedAuthority> authorities) {
+		super(authorities);
+		this.principal = principal;
+		this.token = token;
+		super.setAuthenticated(true);
+	}
+
 	public static JWTAuthenticationToken unauthenticated(Object principal, String token) {
 		//
-		return new JWTAuthenticationToken(principal, token, null);
+		return new JWTAuthenticationToken(principal, token);
 	}
 
 	public static JWTAuthenticationToken authenticated(Object principal, String token,
