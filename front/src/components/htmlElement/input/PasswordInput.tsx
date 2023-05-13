@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { FocusEvent } from "react";
-import styles from "@/src/components/input/input.module.css";
+import styles from "@/src/components/htmlElement/input/input.module.css";
 
 type PasswordInputProps = {
   label: string;

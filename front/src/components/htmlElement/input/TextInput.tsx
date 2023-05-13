@@ -1,6 +1,6 @@
-import styles from "@/src/components/input/input.module.css";
 import { FocusEvent } from "react";
 import { ChangeEvent } from "react";
+import styles from "@/src/components/htmlElement/input/input.module.css";
 
 type TextInputProps = {
   label: string;
