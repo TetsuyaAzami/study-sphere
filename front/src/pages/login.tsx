@@ -8,7 +8,7 @@ import Head from "next/head";
 import { TextInput } from "@/src/components/input/TextInput";
 import { PasswordInput } from "@/src/components/input/PasswordInput";
 
-export const Login = () => {
+const Login = () => {
   //
   const router = useRouter();
 
@@ -101,3 +101,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default Login;

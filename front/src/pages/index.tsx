@@ -1,7 +1,8 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
+import exp from "constants";
 
-export const Home = () => {
+const Home = () => {
   return (
     <div>
       <Head>
@@ -12,3 +13,5 @@ export const Home = () => {
     </div>
   );
 };
+
+export default Home;
