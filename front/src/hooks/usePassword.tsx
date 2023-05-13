@@ -6,7 +6,7 @@ export const usePassword = () => {
   const [passwordInvalidLengthMessage, setPasswordInvalidLengthMessage] =
     useState<string>("");
 
-  const minLength: number = 8;
+  const minLength: number = 4;
   const maxLength: number = 128;
 
   const isPasswordValid = (password: string): boolean => {
@@ -20,7 +20,6 @@ export const usePassword = () => {
   const handlePasswordBlur = (e: FocusEvent<HTMLInputElement>): void => {
     //
     const value = e.target.value;
-    console.log(value);
 
     if (!isPasswordValid(value)) {
       setPasswordInvalidLengthMessage(
@@ -33,6 +32,7 @@ export const usePassword = () => {
 
   return {
     password,
+    isPasswordValid,
     maxLength,
     passwordInvalidLengthMessage,
     handlePasswordChange,

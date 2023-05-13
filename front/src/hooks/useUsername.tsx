@@ -7,7 +7,7 @@ export const useUsername = () => {
     useState<string>("");
 
   const maxLength: number = 30;
-  const minLength: number = 6;
+  const minLength: number = 5;
 
   const isUsernameValid = (username: string): boolean => {
     return minLength <= username.length && username.length <= maxLength;
@@ -32,6 +32,7 @@ export const useUsername = () => {
 
   return {
     username,
+    isUsernameValid,
     usernameInvalidLengthMessage,
     maxLength,
     handleUsernameChange,
