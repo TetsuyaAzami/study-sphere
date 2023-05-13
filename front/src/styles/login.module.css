@@ -22,7 +22,7 @@
 	text-align: center;
 }
 
-.input-container{
+.input-container {
 	width: 80%;
 }
 
@@ -48,7 +48,13 @@
 	background-color: #1e56a6;
 }
 
-.error{
+.button:disabled {
+	background-color: #ddd;
+	color: #aaa;
+	cursor: not-allowed;
+}
+
+.error {
 	color: red;
 	text-align: center;
 	margin-top: 0;
