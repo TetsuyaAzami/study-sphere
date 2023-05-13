@@ -2,11 +2,13 @@ import { FormEvent } from "react";
 import styles from "@/src/styles/login.module.css";
 import { useUsername } from "@/src/hooks/useUsername";
 import { usePassword } from "@/src/hooks/usePassword";
+import axios from "axios";
 
 export default function Login() {
   //
   const {
     username,
+    isUsernameValid,
     usernameInvalidLengthMessage,
     maxLength: usernameMaxLength,
     handleUsernameChange,
@@ -15,17 +17,37 @@ export default function Login() {
 
   const {
     password,
+    isPasswordValid,
     passwordInvalidLengthMessage,
     maxLength: passwordMaxLength,
     handlePasswordChange,
     handlePasswordBlur,
   } = usePassword();
 
-  const handleSubmit = (e: FormEvent<HTMLElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     //
     e.preventDefault();
 
-    console.log(username, password);
+    if (!isUsernameValid(username) || !isPasswordValid(password)) return;
+
+    axios
+      .post(
+        "http://localhost:8080/api/login",
+        { username, password },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.error("エラーが発生しました");
+        console.error("エラーメッセージ:", err.message);
+        console.error("レスポンス:", err.response);
+        console.error("リクエスト:", err.request);
+        console.error("設定:", err.config);
+      });
+  };
+
   };
 
   return (
