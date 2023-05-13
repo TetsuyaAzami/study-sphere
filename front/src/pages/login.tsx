@@ -5,6 +5,8 @@ import { usePassword } from "@/src/hooks/usePassword";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { TextInput } from "@/src/components/input/TextInput";
+import { PasswordInput } from "@/src/components/input/PasswordInput";
 
 export default function Login() {
   //
@@ -64,42 +66,26 @@ export default function Login() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <h1 className={styles.title}>ログイン</h1>
           <div className={styles["form-container"]}>
-            <div className={styles["input-container"]}>
-              <label htmlFor="username">ユーザ名: </label>
-              <input
-                id="username"
-                type="text"
-                name="username"
-                value={username}
-                placeholder="username"
-                onChange={handleUsernameChange}
-                onBlur={handleUsernameBlur}
-                required
-                className={styles.input}
-                maxLength={usernameMaxLength}
-              />
-              {usernameInvalidLengthMessage && (
-                <p className={styles.error}>{usernameInvalidLengthMessage}</p>
-              )}
-            </div>
-            <div className={styles["input-container"]}>
-              <label htmlFor="password">パスワード: </label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                value={password}
-                placeholder="password"
-                onChange={handlePasswordChange}
-                onBlur={handlePasswordBlur}
-                required
-                className={styles.input}
-                maxLength={passwordMaxLength}
-              />
-            </div>
-            {passwordInvalidLengthMessage && (
-              <p className={styles.error}>{passwordInvalidLengthMessage}</p>
-            )}
+            <TextInput
+              label="ユーザ名"
+              tag="username"
+              value={username}
+              onChange={handleUsernameChange}
+              onBlur={handleUsernameBlur}
+              required={true}
+              maxLength={usernameMaxLength}
+              errorMessage={usernameInvalidLengthMessage}
+            />
+            <PasswordInput
+              label="パスワード"
+              tag="password"
+              value={password}
+              onChange={handlePasswordChange}
+              onBlur={handlePasswordBlur}
+              required={true}
+              maxLength={passwordMaxLength}
+              errorMessage={passwordInvalidLengthMessage}
+            />
             <button
               type="submit"
               className={styles.button}

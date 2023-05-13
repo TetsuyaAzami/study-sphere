@@ -22,18 +22,6 @@
 	text-align: center;
 }
 
-.input-container {
-	width: 80%;
-}
-
-.input {
-	width: 100%;
-	padding: 0.5rem;
-	margin-bottom: 1rem;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-}
-
 .button {
 	width: 200px;
 	padding: 0.5rem;
@@ -52,11 +40,4 @@
 	background-color: #ddd;
 	color: #aaa;
 	cursor: not-allowed;
-}
-
-.error {
-	color: red;
-	text-align: center;
-	margin-top: 0;
-	margin-bottom: 1rem;
 }
