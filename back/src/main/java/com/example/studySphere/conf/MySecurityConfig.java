@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import com.example.studySphere.authentication.ExcludePathMatcher;
 import com.example.studySphere.authentication.jwt.JWTTokenProvider;
 import com.example.studySphere.authentication.jwt.JWTTokenVerifier;
 import com.example.studySphere.authentication.jwtValidation.JWTTokenAuthenticationFilter;
@@ -64,9 +63,8 @@ public class MySecurityConfig {
 
 		http.addFilter(new MyUsernamePasswordAuthenticationFilter(authenticationManager,
 				jwtTokenProvider));
-		http.addFilterBefore(new JWTTokenAuthenticationFilter(
-				new ExcludePathMatcher(new String[] {"/", "/api/login", "/error"}),
-				authenticationManager), MyUsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JWTTokenAuthenticationFilter(authenticationManager),
+				MyUsernamePasswordAuthenticationFilter.class);
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.csrf().disable();
@@ -76,17 +74,17 @@ public class MySecurityConfig {
 	}
 
 	@Bean
-	public CorsConfigurationSource corsConfigurationSource(){
+	public CorsConfigurationSource corsConfigurationSource() {
 		//
 		CorsConfiguration configuration = new CorsConfiguration();
 		configuration.setAllowedOrigins(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+		configuration.setAllowedMethods(List.of("*"));
+		configuration.setAllowedHeaders(List.of("*"));
+		configuration.setAllowCredentials(true);
 
-        var source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+		var source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
 
-        return source;
+		return source;
 	}
 }
