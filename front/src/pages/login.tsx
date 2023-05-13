@@ -3,9 +3,13 @@ import styles from "@/src/styles/login.module.css";
 import { useUsername } from "@/src/hooks/useUsername";
 import { usePassword } from "@/src/hooks/usePassword";
 import axios from "axios";
+import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function Login() {
   //
+  const router = useRouter();
+
   const {
     username,
     isUsernameValid,
@@ -37,9 +41,11 @@ export default function Login() {
         { withCredentials: true }
       )
       .then((res) => {
-        console.log(res.data);
+        //
+        router.push("/");
       })
       .catch((err) => {
+        //
         console.error("エラーが発生しました");
         console.error("エラーメッセージ:", err.message);
         console.error("レスポンス:", err.response);
@@ -91,7 +97,13 @@ export default function Login() {
           {passwordInvalidLengthMessage && (
             <p className={styles.error}>{passwordInvalidLengthMessage}</p>
           )}
-          <button type="submit" className={styles.button}>
+            <button
+              type="submit"
+              className={styles.button}
+              disabled={
+                !isUsernameValid(username) || !isPasswordValid(password)
+              }
+            >
             ログイン
           </button>
         </div>
