@@ -5,8 +5,9 @@ import { usePassword } from "@/src/hooks/usePassword";
 import axios from "axios";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { TextInput } from "@/src/components/input/TextInput";
-import { PasswordInput } from "@/src/components/input/PasswordInput";
+import { TextInput } from "@/src/components/htmlElement/input/TextInput";
+import { PasswordInput } from "@/src/components/htmlElement/input/PasswordInput";
+import { Button } from "@/src/components/htmlElement/button/Button";
 
 const Login = () => {
   //
@@ -86,15 +87,13 @@ const Login = () => {
               maxLength={passwordMaxLength}
               errorMessage={passwordInvalidLengthMessage}
             />
-            <button
+            <Button
               type="submit"
-              className={styles.button}
               disabled={
                 !isUsernameValid(username) || !isPasswordValid(password)
               }
-            >
-              ログイン
-            </button>
+              value="ログイン"
+            />
           </div>
         </form>
       </div>
