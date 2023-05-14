@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import styles from "@/src/styles/login.module.css";
 import { useUsername } from "@/src/hooks/useUsername";
 import { usePassword } from "@/src/hooks/usePassword";
@@ -32,9 +32,12 @@ const Login: NextPage = () => {
     handleBlur: handlePasswordBlur,
   } = usePassword();
 
+  const [loginErrorMessage, setLoginErrorMessage] = useState<string>("");
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     //
     e.preventDefault();
+    setLoginErrorMessage("");
 
     if (!isUsernameValid(username) || !isPasswordValid(password)) return;
 
@@ -50,6 +53,7 @@ const Login: NextPage = () => {
       })
       .catch((err) => {
         //
+        setLoginErrorMessage("ユーザ名またはパスワードが違います");
         console.error("エラーが発生しました");
         console.error("エラーメッセージ:", err.message);
         console.error("レスポンス:", err.response);
@@ -68,6 +72,7 @@ const Login: NextPage = () => {
         <form className={styles.form} onSubmit={handleSubmit}>
           <h1 className={styles.title}>ログイン</h1>
           <div className={styles["form-container"]}>
+            <p className={styles.error}>{loginErrorMessage}</p>
             <TextInput
               label="ユーザ名"
               tag="username"
