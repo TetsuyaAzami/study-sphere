@@ -1,41 +1,50 @@
 import { ChangeEvent, useState, FocusEvent } from "react";
 
-export const usePassword = () => {
+type usePasswordReturnType = {
+  password: string;
+  isValid: (password: string) => boolean;
+  maxLength: number;
+  invalidLengthMessage: string;
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (e: FocusEvent<HTMLInputElement>) => void;
+};
+
+export const usePassword = (): usePasswordReturnType => {
   //
   const [password, setPassword] = useState<string>("");
-  const [passwordInvalidLengthMessage, setPasswordInvalidLengthMessage] =
-    useState<string>("");
+
+  const isValid = (password: string): boolean => {
+    return minLength <= password.length && password.length <= maxLength;
+  };
 
   const minLength: number = 4;
   const maxLength: number = 128;
 
-  const isPasswordValid = (password: string): boolean => {
-    return minLength <= password.length && password.length <= maxLength;
-  };
+  const [invalidLengthMessage, setInvalidLengthMessage] = useState<string>("");
 
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setPassword(e.target.value);
   };
 
-  const handlePasswordBlur = (e: FocusEvent<HTMLInputElement>): void => {
+  const handleBlur = (e: FocusEvent<HTMLInputElement>): void => {
     //
-    const value = e.target.value;
+    const value: string = e.target.value;
 
-    if (!isPasswordValid(value)) {
-      setPasswordInvalidLengthMessage(
+    if (!isValid(value)) {
+      setInvalidLengthMessage(
         `パスワードは${minLength}文字以上${maxLength}文字以下で入力してください。`
       );
     } else {
-      setPasswordInvalidLengthMessage("");
+      setInvalidLengthMessage("");
     }
   };
 
   return {
     password,
-    isPasswordValid,
+    isValid,
     maxLength,
-    passwordInvalidLengthMessage,
-    handlePasswordChange,
-    handlePasswordBlur,
+    invalidLengthMessage,
+    handleChange,
+    handleBlur,
   };
 };

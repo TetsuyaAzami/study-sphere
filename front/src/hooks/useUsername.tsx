@@ -1,41 +1,50 @@
 import { ChangeEvent, FocusEvent, useState } from "react";
 
-export const useUsername = () => {
+type useUsernameReturnType = {
+  username: string;
+  isValid: (username: string) => boolean;
+  maxLength: number;
+  invalidLengthMessage: string;
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (e: FocusEvent<HTMLInputElement>) => void;
+};
+
+export const useUsername = (): useUsernameReturnType => {
   //
   const [username, setUsername] = useState<string>("");
-  const [usernameInvalidLengthMessage, setUsernameInvalidLengthMessage] =
-    useState<string>("");
+
+  const isValid = (username: string): boolean => {
+    return minLength <= username.length && username.length <= maxLength;
+  };
 
   const maxLength: number = 30;
   const minLength: number = 5;
 
-  const isUsernameValid = (username: string): boolean => {
-    return minLength <= username.length && username.length <= maxLength;
-  };
+  const [invalidLengthMessage, setInvalidLengthMessage] = useState<string>("");
 
-  const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setUsername(e.target.value);
   };
 
-  const handleUsernameBlur = (e: FocusEvent<HTMLInputElement>): void => {
+  const handleBlur = (e: FocusEvent<HTMLInputElement>): void => {
     //
-    const value = e.target.value;
+    const value: string = e.target.value;
 
-    if (!isUsernameValid(value)) {
-      setUsernameInvalidLengthMessage(
+    if (!isValid(value)) {
+      setInvalidLengthMessage(
         `ユーザ名は${minLength}文字以上${maxLength}文字以下で入力してください。`
       );
     } else {
-      setUsernameInvalidLengthMessage("");
+      setInvalidLengthMessage("");
     }
   };
 
   return {
     username,
-    isUsernameValid,
-    usernameInvalidLengthMessage,
+    isValid,
+    invalidLengthMessage,
     maxLength,
-    handleUsernameChange,
-    handleUsernameBlur,
+    handleChange,
+    handleBlur,
   };
 };

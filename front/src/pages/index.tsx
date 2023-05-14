@@ -1,8 +1,9 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import exp from "constants";
+import { NextPage } from "next";
 
-const Home = () => {
+const Home: NextPage = () => {
   return (
     <div>
       <Head>

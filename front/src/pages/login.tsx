@@ -8,27 +8,28 @@ import Head from "next/head";
 import { TextInput } from "@/src/components/htmlElement/input/TextInput";
 import { PasswordInput } from "@/src/components/htmlElement/input/PasswordInput";
 import { Button } from "@/src/components/htmlElement/button/Button";
+import { NextPage } from "next";
 
-const Login = () => {
+const Login: NextPage = () => {
   //
   const router = useRouter();
 
   const {
     username,
-    isUsernameValid,
-    usernameInvalidLengthMessage,
+    isValid: isUsernameValid,
+    invalidLengthMessage: usernameInvalidLengthMessage,
     maxLength: usernameMaxLength,
-    handleUsernameChange,
-    handleUsernameBlur,
+    handleChange: handleUsernameChange,
+    handleBlur: handleUsernameBlur,
   } = useUsername();
 
   const {
     password,
-    isPasswordValid,
-    passwordInvalidLengthMessage,
+    isValid: isPasswordValid,
+    invalidLengthMessage: passwordInvalidLengthMessage,
     maxLength: passwordMaxLength,
-    handlePasswordChange,
-    handlePasswordBlur,
+    handleChange: handlePasswordChange,
+    handleBlur: handlePasswordBlur,
   } = usePassword();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
