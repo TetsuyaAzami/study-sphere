@@ -43,7 +43,7 @@ const Login: NextPage = () => {
 
     axios
       .post(
-        "http://localhost:8080/api/login",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
         { username, password },
         { withCredentials: true }
       )
