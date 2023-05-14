@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import com.example.studySphere.authentication.MyAuthenticationEntryPoint;
 import com.example.studySphere.authentication.jwt.JWTTokenProvider;
 import com.example.studySphere.authentication.jwt.JWTTokenVerifier;
 import com.example.studySphere.authentication.jwtValidation.JWTTokenAuthenticationFilter;
@@ -30,6 +31,8 @@ public class MySecurityConfig {
 	@Autowired
 	private JWTTokenProvider jwtTokenProvider;
 
+	@Autowired
+	private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
 	@Autowired
 	public void configureProvider(AuthenticationManagerBuilder auth,
 			AuthUserDetailsService authUserDetailsService, JWTTokenVerifier jwtTokenVerifier)
@@ -57,6 +60,8 @@ public class MySecurityConfig {
 		//
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/api/login").permitAll()
 				.anyRequest().authenticated());
+
+		http.exceptionHandling().authenticationEntryPoint(myAuthenticationEntryPoint);
 
 		AuthenticationManager authenticationManager =
 				authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
