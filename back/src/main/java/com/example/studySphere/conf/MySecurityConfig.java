@@ -17,6 +17,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.example.studySphere.authentication.MyAuthenticationEntryPoint;
+import com.example.studySphere.authentication.ResponseService;
 import com.example.studySphere.authentication.jwt.JWTTokenProvider;
 import com.example.studySphere.authentication.jwt.JWTTokenVerifier;
 import com.example.studySphere.authentication.jwtValidation.JWTTokenAuthenticationFilter;
@@ -33,6 +34,10 @@ public class MySecurityConfig {
 
 	@Autowired
 	private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
+
+	@Autowired
+	private ResponseService responseService;
+
 	@Autowired
 	public void configureProvider(AuthenticationManagerBuilder auth,
 			AuthUserDetailsService authUserDetailsService, JWTTokenVerifier jwtTokenVerifier)
@@ -67,7 +72,7 @@ public class MySecurityConfig {
 				authenticationManager(http.getSharedObject(AuthenticationConfiguration.class));
 
 		http.addFilter(new MyUsernamePasswordAuthenticationFilter(authenticationManager,
-				jwtTokenProvider));
+				jwtTokenProvider, responseService));
 		http.addFilterBefore(new JWTTokenAuthenticationFilter(authenticationManager),
 				MyUsernamePasswordAuthenticationFilter.class);
 
