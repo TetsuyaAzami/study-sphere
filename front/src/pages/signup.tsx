@@ -1,78 +1,44 @@
-import { FormEvent, useState } from "react";
-import styles from "@/src/styles/form.module.css";
-import { useUsername } from "@/src/hooks/useUsername";
-import { usePassword } from "@/src/hooks/usePassword";
-import axios from "axios";
-import { useRouter } from "next/router";
+import { NextPage } from "next";
 import Head from "next/head";
+import styles from "@/src/styles/form.module.css";
 import { TextInput } from "@/src/components/htmlElement/input/TextInput";
 import { PasswordInput } from "@/src/components/htmlElement/input/PasswordInput";
 import { Button } from "@/src/components/htmlElement/button/Button";
-import { NextPage } from "next";
+import { useUsername } from "@/src/hooks/useUsername";
+import { usePassword } from "@/src/hooks/usePassword";
 
-const Login: NextPage = () => {
-  //
-  const router = useRouter();
-
+const Signup: NextPage = () => {
   const {
     username,
     isValid: isUsernameValid,
-    invalidLengthMessage: usernameInvalidLengthMessage,
     maxLength: usernameMaxLength,
+    invalidLengthMessage: usernameInvalidLengthMessage,
     handleChange: handleUsernameChange,
     handleBlur: handleUsernameBlur,
   } = useUsername();
 
   const {
     password,
-    isValid: isPasswordValid,
-    invalidLengthMessage: passwordInvalidLengthMessage,
-    maxLength: passwordMaxLength,
     handleChange: handlePasswordChange,
     handleBlur: handlePasswordBlur,
+    invalidLengthMessage: passwordInvalidLengthMessage,
+    maxLength: passwordMaxLength,
+    isValid: isPasswordValid,
   } = usePassword();
 
-  const [loginErrorMessage, setLoginErrorMessage] = useState<string>("");
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = () => {
     //
-    e.preventDefault();
-    setLoginErrorMessage("");
-
-    if (!isUsernameValid(username) || !isPasswordValid(password)) return;
-
-    axios
-      .post(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/login`,
-        { username, password },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        //
-        router.push("/");
-      })
-      .catch((err) => {
-        //
-        setLoginErrorMessage("ユーザ名またはパスワードが違います");
-        console.error("エラーが発生しました");
-        console.error("リクエスト:", err.request);
-        console.error("エラーメッセージ:", err.message);
-        console.error("レスポンス:", err.response);
-        console.error("設定:", err.config);
-      });
   };
-
   return (
     <div>
       <Head>
-        <title>Login</title>
-        <meta name="description" content="login page" />
+        <title>SignUp</title>
+        <meta name="description" content="sign up page" />
       </Head>
       <div className={styles.container}>
         <form className={styles.form} onSubmit={handleSubmit}>
-          <h1 className={styles.title}>ログイン</h1>
+          <h1 className={styles.title}>ユーザ登録</h1>
           <div className={styles["form-container"]}>
-            <p className={styles.error}>{loginErrorMessage}</p>
             <TextInput
               label="ユーザ名"
               tag="username"
@@ -98,7 +64,7 @@ const Login: NextPage = () => {
               disabled={
                 !isUsernameValid(username) || !isPasswordValid(password)
               }
-              value="ログイン"
+              value="登録"
             />
           </div>
         </form>
@@ -107,4 +73,4 @@ const Login: NextPage = () => {
   );
 };
 
-export default Login;
+export default Signup;
