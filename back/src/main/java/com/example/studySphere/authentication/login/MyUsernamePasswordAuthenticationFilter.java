@@ -2,6 +2,7 @@ package com.example.studySphere.authentication.login;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -9,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 import com.example.studySphere.authentication.AuthUserDetails;
 import com.example.studySphere.authentication.ResponseService;
@@ -20,9 +22,12 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+	private ResponseService responseService;
+
 	public MyUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager,
 			JWTTokenProvider jwtTokenProvider, ResponseService responseService) {
 		//
+		this.responseService = responseService;
 		setAuthenticationManager(authenticationManager);
 		setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher("/api/login", "POST"));
 
@@ -49,6 +54,12 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
 		try {
 			AuthenticationRequest authRequest = new ObjectMapper()
 					.readValue(request.getInputStream(), AuthenticationRequest.class);
+
+			List<String> validationErrorMessages = authRequest.generateValidationErrorMessages();
+			if (!CollectionUtils.isEmpty(validationErrorMessages)){
+				this.responseService.sendJsonErrorResponse(response, HttpStatus.BAD_REQUEST, validationErrorMessages);
+				return null;
+			}
 
 			return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
 					authRequest.getUsername(), authRequest.getPassword()));
