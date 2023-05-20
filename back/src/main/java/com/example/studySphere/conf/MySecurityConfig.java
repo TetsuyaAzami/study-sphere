@@ -30,15 +30,6 @@ import com.example.studySphere.authentication.login.MyUsernamePasswordAuthentica
 public class MySecurityConfig {
 
 	@Autowired
-	private JWTTokenProvider jwtTokenProvider;
-
-	@Autowired
-	private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
-
-	@Autowired
-	private ResponseService responseService;
-
-	@Autowired
 	public void configureProvider(AuthenticationManagerBuilder auth,
 			AuthUserDetailsService authUserDetailsService, JWTTokenVerifier jwtTokenVerifier)
 			throws Exception {
@@ -61,7 +52,7 @@ public class MySecurityConfig {
 	}
 
 	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain securityFilterChain(HttpSecurity http, JWTTokenProvider jwtTokenProvider, MyAuthenticationEntryPoint myAuthenticationEntryPoint, ResponseService responseService) throws Exception {
 		//
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/", "/api/login").permitAll()
 				.anyRequest().authenticated());
