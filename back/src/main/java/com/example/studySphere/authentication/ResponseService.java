@@ -2,8 +2,6 @@ package com.example.studySphere.authentication;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
