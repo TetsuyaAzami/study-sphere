@@ -20,6 +20,7 @@ services:
     build: ./mysql
     container_name: study_sphere_mysql
     volumes:
+      - ./mysql/init.sql/:/docker-entrypoint-initdb.d/
       - study_sphere_mysql_data:/var/lib/mysql
       - study_sphere_mysql_log:/var/log/mysql
     env_file:

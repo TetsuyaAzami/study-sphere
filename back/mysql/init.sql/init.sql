@@ -10,7 +10,7 @@ CREATE TABLE email_verifications(
 	email_verification_id INT AUTO_INCREMENT PRIMARY KEY,
 	uuid VARCHAR(100) NOT NULL,
 	email VARCHAR(254) NOT NULL,
-	expiration_date DATETIME NOT NULL,
+	expired_at DATETIME NOT NULL,
 	created_at DATETIME NOT NULL,
 	updated_at DATETIME NOT NULL
 );
