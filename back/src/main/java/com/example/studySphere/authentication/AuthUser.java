@@ -16,7 +16,7 @@ public class AuthUser {
 	private Boolean enabled;
 	private String roles;
 
-	public static AuthUser fromJwt(DecodedJWT jwtToken){
+	public static AuthUser fromJwt(DecodedJWT jwtToken) {
 		//
 		AuthUser authUser = new AuthUser();
 
